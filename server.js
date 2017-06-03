@@ -17,7 +17,7 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-mongoose.connect("mongodb://localhost/week18day3mongoose");
+mongoose.connect("mongodb://localhost/bass");
 var db = mongoose.connection;
 
 db.on("error", function(error) {
@@ -31,6 +31,16 @@ db.once("open", function() {
 
 ///Routes
 // get route for scraping
+
+app.get("/", function(req, res) {
+  News.find({}, function(err, doc) {
+    var hbsObject = {news: doc}
+    console.log("*************************" + hbsObject);
+    res.render("index", hbsObject);
+  })
+
+})
+
 app.get("/scrape", function(req, res) {
   request("http://www.dancingastronaut.com/news/", function(error, response, html) {
     var $ =  cheerio.load(html);
@@ -44,12 +54,14 @@ app.get("/scrape", function(req, res) {
           console.log(err);
         }
       else {
-        console.log(doc);
-        }
+        // var hbsObject = {news: doc};
+        // console.log("*************hbs***********" + hbsObject);
+        res.redirect("/")
+      }
       });
+
     });
   });
-  res.send("scraped");
 });
 
 //get route for pulling scraped news
@@ -67,7 +79,7 @@ app.get("/news", function(req, res) {
   });
 });
 //post route for commenting
-app.post("/news/:id", function(req, res) {
+app.post("/comment/:id", function(req, res) {
  var newCom = new Com(req.body);
  newCom.save(function(err, doc) {
 
@@ -84,14 +96,14 @@ app.post("/news/:id", function(req, res) {
        }
        else {
          // Or send the document to the browser
-         res.send(doc);
+res.redirect("/")
        }
      });
    }
  });
 });
 //post route for adding favorites
-app.post("/news/:id", function(req, res) {
+app.post("/favorite/:id", function(req, res) {
 
       News.findOneAndUpdate({ "_id": req.params.id }, { "favorite": true })
       // Execute the above query
@@ -108,7 +120,20 @@ app.post("/news/:id", function(req, res) {
 
 
 //get route for viewing favorites
-
+app.get("/favorites", function(req, res) {
+  // Grab every doc in the Articles array
+  News.find({favorite:true}, function(err, doc) {
+    var hbsObject = {favorites: doc};
+    // Log any errors
+    if (err) {
+      console.log(err);
+    }
+    // Or send the doc to the browser as a json object
+    else {
+      res.render("favorites", hbsObject);
+    }
+  });
+});
 
 
 //get route for viewing comments

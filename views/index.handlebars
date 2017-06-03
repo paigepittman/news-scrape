@@ -1,6 +1,8 @@
 <div class="jumbotron">
   <center>
-    <h1>Bass Scraper</h1>
+    <h1>Bass Scraper</h1><hr />
+    <form action="/scrape" method="GET">
+      <button>get articles</button></form>
   </center>
 </div>
 <div class="container">
@@ -11,10 +13,31 @@
             <li>
               {{this.title}}
               {{this.link}}
-              <form action="/{{this.id}}?_method=PUT" method="POST">
+              <form action="favorite/{{this._id}}?_method=PUT" method="POST">
                 <input type="hidden" name="favorite" value="true">
-                <button type="submit">favorite</button>
+                <button type="submit" class="btn btn-primary">favorite</button>
               </form>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{{_id}}">
+                  leave comment
+              </button>
+              <div class="modal fade" id="{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title" id="exampleModalLabel" style="margin: auto">leave a comment</h1>
+                    </div>
+                    <div class="modal-body">
+                      <form action="comment/{{this._id}}?_method=PUT" method="POST">
+                        <input type="text" name="{{this.body}}">
+                        <button type="submit" class="btn btn-primary">leave comment</button>
+                      </form>
+                      <div class="modal-footer">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             </li>
         {{/each}}
       </ul>
@@ -22,7 +45,8 @@
   </div>
   <div class="row">
     <div class="col-lg-6 article-info">
-
+      <form action="comment/{{this._id}}?_method=PUT" method="POST">
+        <input type="hidden" name="comment"/>
     </div>
   </div>
 </div>

@@ -3,10 +3,6 @@ var Schema = mongoose.Schema;
 
 var ComsSchema = new Schema({
 
-  title: {
-    type: String
-  },
-
   body: {
     type: String
   }

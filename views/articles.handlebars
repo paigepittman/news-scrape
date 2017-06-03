@@ -1,21 +1,21 @@
 <div class="jumbotron">
   <center>
     <h1>Bass Scraper</h1><hr />
-    <form action="/scrape" method="GET">
-      <button>get articles</button></form>
+    <!-- <form action="/scrape" method="GET">
+      <button>get articles</button></form> -->
   </center>
 </div>
 <div class="container">
   <div class="row">
     <div class="col-lg-6 articles">
       <ul>
-        {{#each favorites}}
+        {{#each News}}
             <li>
               {{this.title}}
               {{this.link}}
-              <form action="favorite/{{this._id}}?_method=PUT" method="POST">
-                <input type="hidden" name="unfavorite" value="false">
-                <button type="submit">unfavorite</button>
+              <form action="/{{this.id}}?_method=PUT" method="POST">
+                <input type="hidden" name="favorite" value="true">
+                <button type="submit">favorite</button>
               </form>
             </li>
         {{/each}}
