@@ -1,0 +1,28 @@
+<div class="jumbotron">
+  <center>
+    <h1>Bass Scraper</h1>
+  </center>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 articles">
+      <ul>
+        {{#each news}}
+            <li>
+              {{this.title}}
+              {{this.link}}
+              <form action="/{{this.id}}?_method=PUT" method="POST">
+                <input type="hidden" name="favorite" value="true">
+                <button type="submit">favorite</button>
+              </form>
+            </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 article-info">
+
+    </div>
+  </div>
+</div>
