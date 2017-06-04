@@ -7,24 +7,22 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-lg-6 articles">
-      <ul>
-        {{#each News}}
-            <li>
-              {{this.title}}
-              {{this.link}}
-              <form action="/{{this.id}}?_method=PUT" method="POST">
-                <input type="hidden" name="favorite" value="true">
-                <button type="submit">favorite</button>
-              </form>
-            </li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-6 article-info">
+    <div class="col-lg-12 article">
 
+              {{this.content}}
+
+              {{#if this.favorite}}
+              <form action="unfavorite/{{this._id}}?_method=PUT" method="POST">
+                <input type="hidden" name="favorite" value="false">
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+              </form>
+              {{else}}
+              <form action="favorite/{{this._id}}?_method=PUT" method="POST">
+                <input type="hidden" name="favorite" value="true">
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
+              </form>
+            {{/if}}
+      </ul>
     </div>
   </div>
 </div>

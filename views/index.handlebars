@@ -2,7 +2,9 @@
   <center>
     <h1>Bass Scraper</h1><hr />
     <form action="/scrape" method="GET">
-      <button>get articles</button></form>
+      <button type="submit" class="btn btn-primary">get articles</button></form>
+      <form action="/favorites" method="GET">
+        <button type="submit" class="btn btn-primary">my favorites</button></form>
   </center>
 </div>
 <div class="container">
@@ -12,11 +14,20 @@
         {{#each news}}
             <li>
               {{this.title}}
-              {{this.link}}
+              <form action="readarticle/{{this._id}}?" method="GET">
+                <button type="submit" class="btn btn-primary">read article</button>
+              </form>
+              {{#if this.favorite}}
+              <form action="unfavorite/{{this._id}}?_method=PUT" method="POST">
+                <input type="hidden" name="favorite" value="false">
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></button>
+              </form>
+              {{else}}
               <form action="favorite/{{this._id}}?_method=PUT" method="POST">
                 <input type="hidden" name="favorite" value="true">
-                <button type="submit" class="btn btn-primary">favorite</button>
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button>
               </form>
+            {{/if}}
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{{_id}}">
                   leave comment
               </button>

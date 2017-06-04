@@ -13,8 +13,8 @@
             <li>
               {{this.title}}
               {{this.link}}
-              <form action="favorite/{{this._id}}?_method=PUT" method="POST">
-                <input type="hidden" name="unfavorite" value="false">
+              <form action="unfavorite/{{this._id}}?_method=PUT" method="POST">
+                <input type="hidden" name="favorite" value="false">
                 <button type="submit">unfavorite</button>
               </form>
             </li>

@@ -4,7 +4,9 @@ var NewsSchema = new Schema({
 
   title: {
     type: String,
-    required: true
+    index: {
+            unique: true
+        }
   },
 
   link: {
@@ -18,7 +20,11 @@ var NewsSchema = new Schema({
   },
 
   favorite: {
-    type: Boolean(false)
+    type: Boolean,
+    default: false
+  },
+  content: {
+    type: String
   }
 });
 

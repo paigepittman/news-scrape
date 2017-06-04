@@ -42,12 +42,14 @@ app.get("/", function(req, res) {
 })
 
 app.get("/scrape", function(req, res) {
+  News.remove();
   request("http://www.dancingastronaut.com/news/", function(error, response, html) {
     var $ =  cheerio.load(html);
-    $("article h2").each(function(i, element) {
+    $("article h3").each(function(i, element) {
       var result = {};
       result.title = $(this).children("a").text();
       result.link = $(this).children("a").attr("href");
+      result.content = $(this).children("a").attr("item-content");
       var clip = new News(result);
       clip.save(function(err, doc) {
         if (err) {
@@ -60,6 +62,41 @@ app.get("/scrape", function(req, res) {
       }
       });
 
+    });
+  });
+});
+
+app.get("/readarticle/:id", function(req, res) {
+
+  var articleID = req.params.id;
+  console.log(articleID);
+  News.findOne({"_id": articleID}, function(err, doc) {
+
+    console.log("URL*******" + doc.link)
+    var articleURL = doc.link
+
+
+    request(articleURL, function(error, response, html) {
+      var $ =  cheerio.load(html);
+
+      $("div.entry-content").each(function(i, element) {
+        var result = $(this).children("p").text();
+        console.log("RESULT>>>>>>>>>>>" + result);
+
+          News.findOneAndUpdate({"_id": articleID}, {"content": result})
+          .exec(function(err, newdoc) {
+            var hbsObject = {article: newdoc};
+            if (err) {
+              console.log(err);
+            }
+            else {
+              console.log("NEWDOC" + newdoc);
+              res.render("articles", newdoc);
+            }
+          });
+
+
+      });
     });
   });
 });
@@ -96,7 +133,7 @@ app.post("/comment/:id", function(req, res) {
        }
        else {
          // Or send the document to the browser
-res.redirect("/")
+res.redirect("back")
        }
      });
    }
@@ -113,10 +150,40 @@ app.post("/favorite/:id", function(req, res) {
           console.log(err);
         }
         else {
-          res.send(doc);
+          res.redirect("back");
         }
       });
     });
+    app.post("/favorite/:id", function(req, res) {
+
+          News.findOneAndUpdate({ "_id": req.params.id }, { "favorite": true })
+          // Execute the above query
+          .exec(function(err, doc) {
+
+            if (err) {
+              console.log(err);
+            }
+            else {
+              res.redirect("back");
+            }
+          });
+        });
+
+
+    app.post("/unfavorite/:id", function(req, res) {
+
+          News.findOneAndUpdate({ "_id": req.params.id }, { "favorite": false })
+          // Execute the above query
+          .exec(function(err, doc) {
+
+            if (err) {
+              console.log(err);
+            }
+            else {
+              res.redirect("back");
+            }
+          });
+        });
 
 
 //get route for viewing favorites
