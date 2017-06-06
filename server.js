@@ -6,6 +6,7 @@ var Com = require("./models/Comments.js")
 var cheerio = require("cheerio");
 var request = require("request");
 var exphbs = require("express-handlebars");
+var PORT = process.env.MONGODB_URI || 3500;
 
 
 var app = express();
@@ -17,7 +18,14 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-mongoose.connect("mongodb://localhost/bass");
+var databaseUri = 'mongodb://localhost/bass';
+if (process.env.MONGODB_URI) {
+  mongoose.connect('mongodb://heroku_dmq351qc:aimougmur9vm8jicoou41eiudt@ds161121.mlab.com:61121/heroku_dmq351qc');
+}
+else {
+  mongoose.connect(databaseUri);
+}
+
 var db = mongoose.connection;
 
 db.on("error", function(error) {
@@ -284,6 +292,6 @@ app.get("/favorites", function(req, res) {
 
 
 
-app.listen(5000, function() {
-  console.log("App running on port 5000!");
+app.listen(PORT, function() {
+  console.log("App running on port!");
 });
