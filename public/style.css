@@ -1,0 +1,40 @@
+.jumbotron {
+  background-color: rgb(0, 0, 0);
+  font-family: 'Capriola', sans-serif;
+}
+
+#all-articles li {
+  list-style-type: none;
+}
+
+#each-article li {
+  list-style-type: none;
+}
+#all-faves li {
+  list-style-type: none;
+}
+body {
+  background-color: black;
+  font-family: 'Heebo', sans-serif;
+  font-size: 18px;
+
+}
+
+.btn {
+  background-color: rgb(0, 0, 0);
+  border-color: rgb(0, 0, 0);
+
+}
+.btn:hover {
+  background-color: rgb(66, 14, 152);
+  border-color: rgb(66, 14, 152);
+
+}
+.carousel {
+  height: 300px;
+  overflow: hidden;
+}
+.img-fluid {
+  width: 100%;
+
+}

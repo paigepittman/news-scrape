@@ -11,5 +11,4 @@ var ComsSchema = new Schema({
 
 var Com = mongoose.model("Comment", ComsSchema);
 
-// Export the Note model
 module.exports = Com;
