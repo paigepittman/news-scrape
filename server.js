@@ -251,31 +251,36 @@ app.get("/favorites", function(req, res) {
     }
     // Or send the doc to the browser as a json object
     else {
-      res.render("favorites", hbsObject);
+        Com.findOne({"_id":req.params.id})
+          .populate("note")
+          .exec(function(error, doc) {
+
+        res.render("favorites", hbsObject);
+      })
     }
   });
 });
 
-app.get("/comments/:id", function(req, res) {
-  // Grab every doc in the Articles array
-  Com.findOne({"_id":req.params.id})
-
-    .populate("note")
-
-    .exec(function(error, doc) {
-
-
-    // Log any errors
-    if (err) {
-      console.log(err);
-    }
-    // Or send the doc to the browser as a json object
-    else {
-      console.log(doc);
-      return doc;
-    }
-  });
-});
+// app.get("/comments/:id", function(req, res) {
+//   // Grab every doc in the Articles array
+//   Com.findOne({"_id":req.params.id})
+//
+//     .populate("note")
+//
+//     .exec(function(error, doc) {
+//
+//
+//     // Log any errors
+//     if (err) {
+//       console.log(err);
+//     }
+//     // Or send the doc to the browser as a json object
+//     else {
+//       console.log(doc);
+//       return doc;
+//     }
+//   });
+// });
 
 
 
